@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:pkidz/content/content_models.dart';
 import 'package:pkidz/main.dart';
 import 'package:pkidz/settings/settings_controller.dart';
 
 Future<void> _pumpApp(WidgetTester tester) async {
   SharedPreferences.setMockInitialValues({});
   final settings = await SettingsController.load();
-  await tester.pumpWidget(PkidzApp(settings: settings));
+  await tester.pumpWidget(
+    PkidzApp(settings: settings, content: const ContentLibrary([])),
+  );
   await tester.pumpAndSettle();
 }
 

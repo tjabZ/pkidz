@@ -58,10 +58,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  # Content categories (data-driven — see CONTENT.md). Each folder holds a
+  # _labels.json manifest plus its PNG images. Add a new category by creating
+  # the folder + _labels.json and adding it here.
+  assets:
+    - assets/content/djur/
+    - assets/content/fordon/
+    - assets/content/mat/
+    - assets/content/familj/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

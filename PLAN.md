@@ -68,14 +68,16 @@
 
 **Goal:** content folders bundled, loaded at startup, ready to be consumed by modules.
 
-- [ ] Decide on `_labels.json` schema for filename → Swedish display word mapping (see `CONTENT.md`)
-- [ ] Create `assets/content/` structure for the 4 categories
-- [ ] Update `pubspec.yaml` with asset declarations
-- [ ] Write `ContentLoader` that enumerates categories and items at app startup
-- [ ] In-memory model: `Category { name, displayName, items: [{key, displayWord, imagePath}] }`
-- [ ] Smoke test: print loaded content to console
+- [x] Decide on `_labels.json` schema (`{category_display, items:{asciiKey: swedishWord}}` — per `CONTENT.md`)
+- [x] Create `assets/content/` structure for the 4 categories (`_labels.json` for djur/fordon/mat/familj; 37 items)
+- [x] Update `pubspec.yaml` with asset declarations (4 category dirs)
+- [x] Write `ContentLoader` — discovers categories via `AssetManifest`, parses each `_labels.json` (`content/content_loader.dart`)
+- [x] In-memory model: `ContentItem{key, displayWord, imagePath, imageAvailable}` / `Category{name, displayName, items}` / `ContentLibrary` (`content/content_models.dart`)
+- [x] Smoke test: `debugPrint` of loaded categories in `main`, plus a load() integration test
 
-**Exit criterion:** `ContentLoader` returns 4 categories with the user-supplied items, accessible from any screen.
+**Exit criterion:** `ContentLoader` returns 4 categories with the user-supplied items, accessible from any screen. ✅ (verified by 7 passing tests incl. real-asset 4-category load; exposed app-wide via `ContentScope`)
+
+> Images aren't bundled yet (user supplies PNGs later) — every item currently has `imageAvailable=false`. Modules (Phases 3–5) use `Category.playableItems` to skip image-less items. familj PNGs stay gitignored until the repo goes private.
 
 ---
 
@@ -182,3 +184,5 @@
 - 2026-05-27 — Correct-answer background brightened from `#DEEDD2` to `#C8E0B5` for a more rewarding visual.
 - 2026-05-28 — Flutter project scaffolded (`flutter create`, org `se.tjabz.pkidz`); GitHub Actions workflow (`build.yml`) written — Android debug APK + unsigned iOS IPA. Local git repo initialized on `main`.
 - 2026-05-28 — **Repo strategy:** start **public** now (free unlimited CI during active dev), with NO family photos committed. Switch to **private** later once stable/low-churn, then add real family photos. Hard rule: never commit a family photo while public (git history is permanent). Guardrail: `/assets/content/familj/` is gitignored until the switch.
+- 2026-05-28 — **Phase 1 shipped.** App shell built (theme, 3-tile home, module placeholders, Home button, `shared_preferences` store). Pushed; CI green (Android APK 4m27s + unsigned iOS IPA 2m55s). Verified live in Chrome.
+- 2026-05-28 — **Known CI item (not yet fixed):** GitHub Actions warns `checkout@v4`/`setup-java@v4`/`upload-artifact@v4` run on Node 20, force-upgraded to Node 24 on **2026-06-02**. Bump action majors before then to avoid breakage.

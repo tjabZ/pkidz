@@ -1,0 +1,15 @@
+{
+  "category_display": "Mat",
+  "items": {
+    "apple": "äpple",
+    "banan": "banan",
+    "brod": "bröd",
+    "mjolk": "mjölk",
+    "ost": "ost",
+    "agg": "ägg",
+    "kott": "kött",
+    "fisk": "fisk",
+    "potatis": "potatis",
+    "glass": "glass"
+  }
+}

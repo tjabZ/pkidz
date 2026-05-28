@@ -1,0 +1,12 @@
+{
+  "category_display": "Familj",
+  "items": {
+    "mamma": "mamma",
+    "pappa": "pappa",
+    "mormor": "mormor",
+    "morfar": "morfar",
+    "farmor": "farmor",
+    "farfar": "farfar",
+    "syskon": "syskon"
+  }
+}

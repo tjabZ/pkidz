@@ -1,0 +1,15 @@
+{
+  "category_display": "Fordon",
+  "items": {
+    "bil": "bil",
+    "lastbil": "lastbil",
+    "buss": "buss",
+    "flygplan": "flygplan",
+    "cykel": "cykel",
+    "taag": "tåg",
+    "baat": "båt",
+    "motorcykel": "motorcykel",
+    "helikopter": "helikopter",
+    "traktor": "traktor"
+  }
+}

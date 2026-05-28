@@ -1,0 +1,15 @@
+{
+  "category_display": "Djur",
+  "items": {
+    "hund": "hund",
+    "katt": "katt",
+    "hast": "häst",
+    "ko": "ko",
+    "gris": "gris",
+    "far": "får",
+    "raev": "räv",
+    "bjoern": "björn",
+    "aelg": "älg",
+    "uggla": "uggla"
+  }
+}
