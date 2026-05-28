@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>p-KidZ — UI sketches</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #F6F1E8;
+    --primary:   #A7C5BD;
+    --secondary: #88A8C0;
+    --accent:    #E8B4A0;
+    --text:      #2F3E46;
+    --correct:   #B5D3A8;
+    --correct-bg: #C8E0B5;
+    --wrong:     #E8A3A3;
+    --paper:     #FFFFFF;
+    --hint:      #C9C3B6;
+    --muted:     #8A8478;
+    --shadow:    0 4px 14px rgba(47,62,70,0.08);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Fredoka', system-ui, sans-serif;
+    background: #EEE7D9;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+  .doc-header {
+    padding: 32px 48px 16px;
+    background: #EEE7D9;
+    border-bottom: 1px solid #DDD3BF;
+  }
+  .doc-header h1 {
+    margin: 0 0 8px;
+    font-weight: 600;
+    font-size: 28px;
+  }
+  .doc-header p {
+    margin: 0;
+    color: var(--muted);
+  }
+  nav.toc {
+    position: sticky;
+    top: 0;
+    background: rgba(238,231,217,0.96);
+    backdrop-filter: blur(6px);
+    padding: 12px 48px;
+    border-bottom: 1px solid #DDD3BF;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+  }
+  nav.toc a {
+    text-decoration: none;
+    color: var(--text);
+    background: var(--paper);
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid #E2DAC7;
+  }
+  nav.toc a:hover { background: var(--primary); color: var(--bg); }
+
+  section.screen {
+    padding: 40px 48px;
+    border-bottom: 1px dashed #D0C5AE;
+  }
+  section.screen h2 {
+    margin: 0 0 4px;
+    font-weight: 600;
+    font-size: 22px;
+  }
+  section.screen .subtitle {
+    margin: 0 0 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* iPad landscape mockup frame: 4:3 aspect */
+  .ipad {
+    width: 100%;
+    max-width: 1024px;
+    aspect-ratio: 4 / 3;
+    margin: 0 auto;
+    background: var(--bg);
+    border-radius: 36px;
+    border: 14px solid #2F3E46;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .ipad-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .ipad-row .ipad { max-width: none; }
+
+  /* App chrome — top bar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+  }
+  .topbar .home-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: var(--paper);
+    display: grid;
+    place-items: center;
+    box-shadow: var(--shadow);
+    font-size: 26px;
+  }
+  .topbar .title {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .topbar .gear {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: rgba(167,197,189,0.4);
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    color: var(--text);
+  }
+
+  /* HOME tiles */
+  .home-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    padding: 8px 56px 56px;
+  }
+  .tile {
+    background: var(--paper);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    border: 3px solid transparent;
+  }
+  .tile:nth-child(1) { border-color: var(--primary); }
+  .tile:nth-child(2) { border-color: var(--secondary); }
+  .tile:nth-child(3) { border-color: var(--accent); }
+  .tile-icon {
+    font-size: 80px;
+    margin-bottom: 12px;
+  }
+  .tile-label {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .tile-sub {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* KLOCKA */
+  .clock-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 36px 28px;
+    gap: 28px;
+    align-items: center;
+  }
+  .clock-display {
+    background: var(--paper);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    height: 100%;
+  }
+  .analog {
+    width: 240px;
+    height: 240px;
+  }
+  .digital {
+    font-size: 80px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--text);
+    line-height: 1;
+  }
+  .daypart {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    color: var(--muted);
+  }
+
+  .answer-area {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .answer-label {
+    font-size: 18px;
+    color: var(--muted);
+    text-align: center;
+  }
+  .choice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .choice {
+    background: var(--paper);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 22px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--text);
+    border: 3px solid transparent;
+  }
+  .choice.dimmed { opacity: 0.35; color: var(--wrong); border-color: var(--wrong); }
+  .choice.correct { border-color: var(--correct); background: var(--correct-bg); }
+
+  .scroller-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+  .scroller {
+    background: var(--paper);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 14px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .scroller .num {
+    font-size: 22px;
+    color: var(--hint);
+    line-height: 1.2;
+  }
+  .scroller .num.center {
+    font-size: 50px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+    margin: 6px 0;
+  }
+  .scroller-colon {
+    font-size: 60px;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .submit-btn {
+    margin-top: 8px;
+    background: var(--primary);
+    color: var(--text);
+    padding: 16px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+    box-shadow: var(--shadow);
+  }
+
+  /* BILDQUIZ */
+  .quiz-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 56px 40px;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .quiz-word {
+    font-size: 56px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .quiz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    width: 480px;
+    max-width: 100%;
+  }
+  .quiz-card {
+    background: var(--paper);
+    border-radius: 22px;
+    aspect-ratio: 1;
+    box-shadow: var(--shadow);
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    font-size: 18px;
+    border: 3px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .quiz-card .placeholder {
+    text-align: center;
+    line-height: 1.3;
+  }
+  .quiz-card .ph-icon {
+    font-size: 70px;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .quiz-card.dimmed { opacity: 0.35; border-color: var(--wrong); }
+  .quiz-card.correct { border-color: var(--correct); background: var(--correct-bg); }
+
+  /* STAVNING */
+  .stav-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    padding: 0 32px 24px;
+    gap: 24px;
+    align-items: stretch;
+  }
+  .stav-image {
+    background: var(--paper);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .stav-image .ph-icon {
+    font-size: 120px;
+  }
+  .stav-input-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .stav-hint {
+    text-align: center;
+    font-size: 38px;
+    color: var(--hint);
+    letter-spacing: 4px;
+    min-height: 48px;
+  }
+  .stav-line {
+    background: var(--paper);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    padding: 16px;
+    font-size: 42px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    min-height: 64px;
+    color: var(--text);
+  }
+  .stav-line .typed { color: var(--text); }
+  .stav-line .typed-wrong { color: var(--wrong); }
+  .stav-line .underline {
+    display: inline-block;
+    width: 24px;
+    border-bottom: 4px solid var(--hint);
+    margin: 0 4px;
+    vertical-align: middle;
+  }
+  .keyboard {
+    background: rgba(167,197,189,0.18);
+    border-radius: 18px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .keyboard-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+  }
+  .key {
+    flex: 1;
+    background: var(--paper);
+    border-radius: 12px;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 20px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(47,62,70,0.06);
+  }
+  .key.wide { flex: 1.6; font-size: 16px; }
+  .key.scandic { background: #EAE0CF; }
+  .key.wrong-flash {
+    background: var(--wrong);
+    color: #FFF;
+    box-shadow: 0 0 0 3px var(--wrong), 0 2px 4px rgba(47,62,70,0.06);
+  }
+
+  /* PARENT GATE */
+  .gate-body {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding: 0 48px 40px;
+  }
+  .gate-card {
+    background: var(--paper);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    padding: 36px 56px;
+    text-align: center;
+    max-width: 460px;
+  }
+  .gate-card .small {
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .gate-card .question {
+    font-size: 48px;
+    font-weight: 600;
+    margin: 16px 0 24px;
+  }
+  .gate-card .gate-input {
+    border: 2px solid #DDD3BF;
+    border-radius: 16px;
+    padding: 18px;
+    font-size: 28px;
+    width: 200px;
+    text-align: center;
+    color: var(--text);
+    background: var(--bg);
+  }
+  .gate-card .hint-text {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 18px;
+  }
+
+  /* SETTINGS */
+  .settings-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+    padding: 0 36px 28px;
+  }
+  .settings-card {
+    background: var(--paper);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .settings-card h3 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 20px;
+  }
+  .settings-card .group-label {
+    font-size: 13px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .pill-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .pill {
+    background: var(--bg);
+    border: 2px solid transparent;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .pill.active {
+    background: var(--primary);
+    color: var(--text);
+    border-color: var(--primary);
+  }
+
+  /* annotations */
+  .notes {
+    max-width: 1024px;
+    margin: 16px auto 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .notes b { color: var(--text); font-weight: 600; }
+  .notes ul { padding-left: 22px; margin: 8px 0; }
+
+  footer {
+    padding: 32px 48px 80px;
+    color: var(--muted);
+    font-size: 13px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <h1>p-KidZ — UI sketches</h1>
+  <p>Static HTML mockup of the MVP screens. iPad landscape (4:3). Soft Scandinavian palette. Swedish copy. Not interactive — for visual review.</p>
+</header>
+
+<nav class="toc">
+  <a href="#home">Hem</a>
+  <a href="#klocka-mc">Klocka · multiple choice</a>
+  <a href="#klocka-scroller">Klocka · scroller</a>
+  <a href="#bildquiz">Bildquiz</a>
+  <a href="#stavning-easy">Stavning · easy</a>
+  <a href="#stavning-medium">Stavning · medium</a>
+  <a href="#stavning-hard">Stavning · hard</a>
+  <a href="#gate">Föräldraläge</a>
+  <a href="#settings">Inställningar</a>
+</nav>
+
+<!-- ============ HOME ============ -->
+<section id="home" class="screen">
+  <h2>Hem (Home)</h2>
+  <p class="subtitle">Three large tiles · gear icon for parent-gated settings · always-visible app title</p>
+  <div class="ipad">
+    <div class="topbar">
+      <div class="home-btn" style="visibility:hidden">🏠</div>
+      <div class="title" style="font-size:32px; font-weight:600;">p-KidZ</div>
+      <div class="gear">⚙</div>
+    </div>
+    <div class="home-body">
+      <div class="tile">
+        <div class="tile-icon">🕒</div>
+        <div class="tile-label">Klocka</div>
+        <div class="tile-sub">Lär dig klockan</div>
+      </div>
+      <div class="tile">
+        <div class="tile-icon">🖼️</div>
+        <div class="tile-label">Bildquiz</div>
+        <div class="tile-sub">Hitta rätt bild</div>
+      </div>
+      <div class="tile">
+        <div class="tile-icon">✏️</div>
+        <div class="tile-label">Stavning</div>
+        <div class="tile-sub">Skriv ordet</div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <b>Notes:</b>
+    <ul>
+      <li>Each tile uses a different palette color for the border so the kid forms a quick mental map.</li>
+      <li>Gear is visible but settings are math-gated (see Föräldraläge below).</li>
+      <li>Emoji icons here are placeholders — real build can use custom pastel illustrations or stay with emoji.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ KLOCKA · MULTIPLE CHOICE ============ -->
+<section id="klocka-mc" class="screen">
+  <h2>Klocka — Multiple choice input</h2>
+  <p class="subtitle">Analog face is the only display · sun/moon hint disambiguates morning/afternoon · always answer in 24h</p>
+  <div class="ipad">
+    <div class="topbar">
+      <div class="home-btn">🏠</div>
+      <div class="title">Klocka</div>
+      <div class="gear">⚙</div>
+    </div>
+    <div class="clock-body">
+      <div class="clock-display">
+        <svg class="analog" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="92" fill="#FFFFFF" stroke="#2F3E46" stroke-width="3"/>
+          <!-- hour numbers -->
+          <g font-family="Fredoka, sans-serif" font-size="16" font-weight="600" text-anchor="middle" fill="#2F3E46">
+            <text x="100" y="28">12</text>
+            <text x="138" y="38">1</text>
+            <text x="166" y="65">2</text>
+            <text x="176" y="106">3</text>
+            <text x="166" y="146">4</text>
+            <text x="138" y="173">5</text>
+            <text x="100" y="183">6</text>
+            <text x="62" y="173">7</text>
+            <text x="34" y="146">8</text>
+            <text x="24" y="106">9</text>
+            <text x="34" y="65">10</text>
+            <text x="62" y="38">11</text>
+          </g>
+          <!-- tick marks -->
+          <g stroke="#88A8C0" stroke-width="2">
+            <line x1="100" y1="14" x2="100" y2="22"/>
+            <line x1="186" y1="100" x2="178" y2="100"/>
+            <line x1="100" y1="186" x2="100" y2="178"/>
+            <line x1="14" y1="100" x2="22" y2="100"/>
+          </g>
+          <!-- hour hand: pointing at 3 -->
+          <line x1="100" y1="100" x2="148" y2="100" stroke="#2F3E46" stroke-width="6" stroke-linecap="round"/>
+          <!-- minute hand: pointing at 6 (30) -->
+          <line x1="100" y1="100" x2="100" y2="160" stroke="#88A8C0" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="100" cy="100" r="6" fill="#2F3E46"/>
+        </svg>
+        <div class="daypart">
+          <span style="font-size:28px">🌙</span>
+          <span>eftermiddag / kväll</span>
+        </div>
+      </div>
+      <div class="answer-area">
+        <div class="answer-label">Vad är klockan?</div>
+        <div class="choice-grid">
+          <div class="choice dimmed">14:30</div>
+          <div class="choice">15:30</div>
+          <div class="choice">15:00</div>
+          <div class="choice">15:45</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <b>Notes:</b>
+    <ul>
+      <li>The hands point at 3:30 — could be morning or afternoon. The moon icon + "eftermiddag / kväll" disambiguates → correct answer is 15:30.</li>
+      <li>14:30 is shown <i>dimmed</i> to demo the wrong-answer behavior. Kid keeps trying without losing the question.</li>
+      <li>Sun/moon icon only appears in analog-only mode (digital and both modes don't need it).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ KLOCKA · SCROLLER ============ -->
+<section id="klocka-scroller" class="screen">
+  <h2>Klocka — Free-text scroller input</h2>
+  <p class="subtitle">Same analog face · two big scrollers for hours and minutes · 24h answer · shows the new "correct" green state</p>
+  <div class="ipad">
+    <div class="topbar">
+      <div class="home-btn">🏠</div>
+      <div class="title">Klocka</div>
+      <div class="gear">⚙</div>
+    </div>
+    <div class="clock-body">
+      <div class="clock-display">
+        <svg class="analog" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="92" fill="#FFFFFF" stroke="#2F3E46" stroke-width="3"/>
+          <g font-family="Fredoka, sans-serif" font-size="16" font-weight="600" text-anchor="middle" fill="#2F3E46">
+            <text x="100" y="28">12</text>
+            <text x="138" y="38">1</text>
+            <text x="166" y="65">2</text>
+            <text x="176" y="106">3</text>
+            <text x="166" y="146">4</text>
+            <text x="138" y="173">5</text>
+            <text x="100" y="183">6</text>
+            <text x="62" y="173">7</text>
+            <text x="34" y="146">8</text>
+            <text x="24" y="106">9</text>
+            <text x="34" y="65">10</text>
+            <text x="62" y="38">11</text>
+          </g>
+          <!-- 09:15: hour hand at ~9, minute hand at 3 -->
+          <line x1="100" y1="100" x2="56" y2="100" stroke="#2F3E46" stroke-width="6" stroke-linecap="round"/>
+          <line x1="100" y1="100" x2="160" y2="100" stroke="#88A8C0" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="100" cy="100" r="6" fill="#2F3E46"/>
+        </svg>
+        <div class="daypart">
+          <span style="font-size:28px">☀️</span>
+          <span>morgon / förmiddag</span>
+        </div>
+      </div>
+      <div class="answer-area">
+        <div class="answer-label">Vad är klockan?</div>
+        <div class="scroller-row">
+          <div class="scroller">
+            <div class="num">07</div>
+            <div class="num">08</div>
+            <div class="num center">09</div>
+            <div class="num">10</div>
+            <div class="num">11</div>
+          </div>
+          <div class="scroller-colon">:</div>
+          <div class="scroller">
+            <div class="num">00</div>
+            <div class="num">05</div>
+            <div class="num center">15</div>
+            <div class="num">20</div>
+            <div class="num">25</div>
+          </div>
+        </div>
+        <div class="submit-btn" style="background: var(--correct); border:3px solid var(--correct);">Klart! ✨</div>
+        <div class="answer-label" style="color:var(--text); font-weight:500; background: var(--correct-bg); padding:12px; border-radius:14px;">Bra jobbat! Klockan är 09:15.</div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <b>Notes:</b>
+    <ul>
+      <li>Same analog face — sun icon + "morgon / förmiddag" tells the kid it's morning, so hands at 9:15 → answer 09:15.</li>
+      <li>Big readable scrollers; the centered number is the current selection. Kid swipes up/down per column.</li>
+      <li>Minute scroller step depends on difficulty: full hours = 00 only · half = 00/30 · quarter = 00/15/30/45 · advanced = 00–59.</li>
+      <li>This screen also demonstrates the <b>new brighter correct-fill</b> (<code>#C8E0B5</code>) on the "Bra jobbat" confirmation panel.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ BILDQUIZ ============ -->
+<section id="bildquiz" class="screen">
+  <h2>Bildquiz</h2>
+  <p class="subtitle">Word at top · 2×2 grid of images · tap the matching one</p>
+  <div class="ipad">
+    <div class="topbar">
+      <div class="home-btn">🏠</div>
+      <div class="title">Bildquiz · Djur</div>
+      <div class="gear">⚙</div>
+    </div>
+    <div class="quiz-body">
+      <div class="quiz-word">katt</div>
+      <div class="quiz-grid">
+        <div class="quiz-card"><div class="placeholder"><span class="ph-icon">🐕</span>hund</div></div>
+        <div class="quiz-card correct"><div class="placeholder"><span class="ph-icon">🐈</span>katt</div></div>
+        <div class="quiz-card dimmed"><div class="placeholder"><span class="ph-icon">🐄</span>ko</div></div>
+        <div class="quiz-card"><div class="placeholder"><span class="ph-icon">🐑</span>får</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <b>Notes:</b>
+    <ul>
+      <li>Emojis in the cards are placeholders — real build shows the user-provided PNG images filling each card.</li>
+      <li>The wrong tap (ko) dims; the correct one (katt) glows green; the other two stay neutral.</li>
+      <li>Category name appears in the top bar so parent can confirm what's loaded.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ STAVNING — EASY ============ -->
+<section id="stavning-easy" class="screen">
+  <h2>Stavning — Easy (faded word above the line)</h2>
+  <p class="subtitle">Tracing-style: the answer is visible but faded, kid copies it</p>
+  <div class="ipad">
+    <div class="topbar">
+      <div class="home-btn">🏠</div>
+      <div class="title">Stavning · Djur</div>
+      <div class="gear">⚙</div>
+    </div>
+    <div class="stav-body">
+      <div class="stav-image">
+        <div style="text-align:center"><span class="ph-icon">🐎</span><div style="margin-top:4px">image: häst.png</div></div>
+      </div>
+      <div class="stav-input-col">
+        <div class="stav-hint">h ä s t</div>
+        <div class="stav-line"><span class="typed">h ä</span><span class="underline"></span><span class="underline"></span></div>
+        <div class="keyboard">
+          <div class="keyboard-row">
+            <div class="key">a</div><div class="key">b</div><div class="key">c</div><div class="key">d</div><div class="key">e</div><div class="key">f</div><div class="key">g</div><div class="key">h</div><div class="key">i</div><div class="key">j</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="key">k</div><div class="key">l</div><div class="key">m</div><div class="key">n</div><div class="key">o</div><div class="key">p</div><div class="key">q</div><div class="key">r</div><div class="key">s</div><div class="key">t</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="key">u</div><div class="key">v</div><div class="key">w</div><div class="key">x</div><div class="key">y</div><div class="key">z</div>
+            <div class="key scandic">å</div><div class="key scandic">ä</div><div class="key scandic">ö</div>
+            <div class="key wide">⌫</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <b>Notes:</b>
+    <ul>
+      <li>The faded "h ä s t" above is the trace target. Kid has typed "h ä" already; cursor waits for "s".</li>
+      <li>å/ä/ö keys highlighted with a slightly different background — they're harder to find on a normal keyboard, but easy here.</li>
+      <li>No Shift key — case-insensitive everywhere.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ STAVNING — MEDIUM ============ -->
+<section id="stavning-medium" class="screen">
+  <h2>Stavning — Medium (some letter hints)</h2>
+  <p class="subtitle">A few letters of the word are pre-filled; kid fills the rest</p>
+  <div class="ipad">
+    <div class="topbar">
+      <div class="home-btn">🏠</div>
+      <div class="title">Stavning · Mat</div>
+      <div class="gear">⚙</div>
+    </div>
+    <div class="stav-body">
+      <div class="stav-image">
+        <div style="text-align:center"><span class="ph-icon">🍎</span><div style="margin-top:4px">image: apple.png (äpple)</div></div>
+      </div>
+      <div class="stav-input-col">
+        <div class="stav-hint" style="opacity:0">.</div>
+        <div class="stav-line">
+          <span class="typed">ä</span>
+          <span class="underline"></span>
+          <span class="underline"></span>
+          <span class="typed">l</span>
+          <span class="underline"></span>
+        </div>
+        <div class="keyboard">
+          <div class="keyboard-row">
+            <div class="key">a</div><div class="key">b</div><div class="key">c</div><div class="key">d</div><div class="key">e</div><div class="key">f</div><div class="key">g</div><div class="key">h</div><div class="key">i</div><div class="key">j</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="key">k</div><div class="key">l</div><div class="key">m</div><div class="key">n</div><div class="key">o</div><div class="key">p</div><div class="key wrong-flash">q</div><div class="key">r</div><div class="key">s</div><div class="key">t</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="key">u</div><div class="key">v</div><div class="key">w</div><div class="key">x</div><div class="key">y</div><div class="key">z</div>
+            <div class="key scandic">å</div><div class="key scandic">ä</div><div class="key scandic">ö</div>
+            <div class="key wide">⌫</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <b>Notes:</b>
+    <ul>
+      <li>Word is "äpple". Hints pre-fill positions 1 (ä) and 4 (l). Kid just tapped "q" — wrong. The key flashes red but the letter is <b>not committed</b>; position 2 still waits. Kid simply taps the next letter — no backspace needed.</li>
+      <li>The ⌫ key stays available for the rare case the kid wants to undo a correctly-committed letter (e.g. for medium difficulty where they accidentally typed past the hint).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ STAVNING — HARD ============ -->
+<section id="stavning-hard" class="screen">
+  <h2>Stavning — Hard (blank underscores only)</h2>
+  <p class="subtitle">No hints, just the right number of letter slots</p>
+  <div class="ipad">
+    <div class="topbar">
+      <div class="home-btn">🏠</div>
+      <div class="title">Stavning · Fordon</div>
+      <div class="gear">⚙</div>
+    </div>
+    <div class="stav-body">
+      <div class="stav-image">
+        <div style="text-align:center"><span class="ph-icon">🚂</span><div style="margin-top:4px">image: taag.png (tåg)</div></div>
+      </div>
+      <div class="stav-input-col">
+        <div class="stav-hint" style="opacity:0">.</div>
+        <div class="stav-line">
+          <span class="underline"></span>
+          <span class="underline"></span>
+          <span class="underline"></span>
+        </div>
+        <div class="keyboard">
+          <div class="keyboard-row">
+            <div class="key">a</div><div class="key">b</div><div class="key">c</div><div class="key">d</div><div class="key">e</div><div class="key">f</div><div class="key">g</div><div class="key">h</div><div class="key">i</div><div class="key">j</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="key">k</div><div class="key">l</div><div class="key">m</div><div class="key">n</div><div class="key">o</div><div class="key">p</div><div class="key">q</div><div class="key">r</div><div class="key">s</div><div class="key">t</div>
+          </div>
+          <div class="keyboard-row">
+            <div class="key">u</div><div class="key">v</div><div class="key">w</div><div class="key">x</div><div class="key">y</div><div class="key">z</div>
+            <div class="key scandic">å</div><div class="key scandic">ä</div><div class="key scandic">ö</div>
+            <div class="key wide">⌫</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <b>Notes:</b>
+    <ul>
+      <li>Three blank slots for "tåg" — kid sees the image, must spell from memory.</li>
+      <li>Same per-keystroke validation as easy/medium — wrong letter highlighted instantly, backspace and retry.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ PARENT GATE ============ -->
+<section id="gate" class="screen">
+  <h2>Föräldraläge (Parent gate)</h2>
+  <p class="subtitle">Math question when the gear is tapped · simple for parent, blocks 5-7yo</p>
+  <div class="ipad">
+    <div class="topbar">
+      <div class="home-btn">🏠</div>
+      <div class="title">Förälder</div>
+      <div class="gear" style="visibility:hidden">⚙</div>
+    </div>
+    <div class="gate-body">
+      <div class="gate-card">
+        <div class="small">Föräldraläge</div>
+        <div class="question">7 + 6 = ?</div>
+        <input class="gate-input" placeholder="?" disabled>
+        <div class="hint-text">Skriv svaret för att öppna inställningar.</div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <b>Notes:</b>
+    <ul>
+      <li>Numbers regenerate each time, range ~5+5 to 9+9 — too hard for a 5-7yo who hasn't learned two-digit math, easy for a parent.</li>
+      <li>Wrong answer → silently re-prompts with a new question. No retry counter, no lockout.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<section id="settings" class="screen">
+  <h2>Inställningar (Settings)</h2>
+  <p class="subtitle">Three columns, one per module · current selection highlighted as a pill</p>
+  <div class="ipad">
+    <div class="topbar">
+      <div class="home-btn">🏠</div>
+      <div class="title">Inställningar</div>
+      <div class="gear" style="visibility:hidden">⚙</div>
+    </div>
+    <div class="settings-body">
+      <div class="settings-card">
+        <h3>🕒 Klocka</h3>
+        <div>
+          <div class="group-label">Svårighet</div>
+          <div class="pill-row">
+            <div class="pill">Hela</div>
+            <div class="pill active">Halv</div>
+            <div class="pill">Kvart</div>
+            <div class="pill">Minuter</div>
+          </div>
+        </div>
+        <div>
+          <div class="group-label">Svar</div>
+          <div class="pill-row">
+            <div class="pill active">4 alternativ</div>
+            <div class="pill">Fri text</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h3>🖼️ Bildquiz</h3>
+        <div>
+          <div class="group-label">Kategori</div>
+          <div class="pill-row">
+            <div class="pill active">Djur</div>
+            <div class="pill">Fordon</div>
+            <div class="pill">Mat</div>
+            <div class="pill">Familj</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h3>✏️ Stavning</h3>
+        <div>
+          <div class="group-label">Kategori</div>
+          <div class="pill-row">
+            <div class="pill">Djur</div>
+            <div class="pill active">Fordon</div>
+            <div class="pill">Mat</div>
+            <div class="pill">Familj</div>
+          </div>
+        </div>
+        <div>
+          <div class="group-label">Svårighet</div>
+          <div class="pill-row">
+            <div class="pill active">Lätt</div>
+            <div class="pill">Mellan</div>
+            <div class="pill">Svår</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <b>Notes:</b>
+    <ul>
+      <li>Pills are toggle buttons. Tap to switch the active option in each group.</li>
+      <li>Categories list updates automatically when new content folders are added (data-driven from content system).</li>
+      <li>Reset-to-defaults button TBD — probably a small text link in a footer of this screen.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  Sketch v1 · pastels: <code>#F6F1E8 · #A7C5BD · #88A8C0 · #E8B4A0 · #2F3E46 · #B5D3A8 · #E8A3A3</code>
+</footer>
+
+</body>
+</html>
