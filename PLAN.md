@@ -32,7 +32,8 @@
 
 ### CI build pipeline
 - [x] Decide CI provider → **GitHub Actions** (free unlimited on public; ~200 macOS-min/mo free on private)
-- [~] Create GitHub repo for the project (public for now — see decisions log 2026-05-28)
+- [x] Create GitHub repo for the project → `github.com/tjabZ/pkidz` (public for now — see decisions log 2026-05-28)
+- [x] First push to `main` triggered CI; **build succeeded** (Android APK + unsigned iOS IPA artifacts produced, 2026-05-28)
 - [x] Write workflow that runs `flutter build ios --release --no-codesign` on macOS runner (`.github/workflows/build.yml`)
 - [x] Workflow uploads the IPA as an artifact (also builds Android debug APK)
 - [ ] Manual smoke test: download IPA, install via AltStore/TrollStore on iPad, launch
@@ -48,16 +49,18 @@
 **Goal:** Flutter project exists; home screen with 3 tiles is navigable; theme/palette applied.
 
 - [x] `flutter create pkidz` with `--org se.tjabz.pkidz` (bundle id confirmed: `se.tjabz.pkidz`)
-- [ ] Set up folder structure (`lib/{shell,modules,content,theme,settings}`)
-- [ ] Theme file with the Soft Scandinavian palette from `SPEC.md` §4
-- [ ] Home screen with 3 large tiles: Klocka / Bildquiz / Stavning
-- [ ] Module placeholder screens (3 blank routes wired up)
-- [ ] Home button visible in every module screen, returns to home
-- [ ] Orientation support (rotate handling)
-- [ ] Persistent settings store (`shared_preferences` package)
-- [ ] Default settings written on first launch
+- [x] Set up folder structure (`lib/{shell,modules,theme,settings}`; `content/` deferred to Phase 2)
+- [x] Theme file with the Soft Scandinavian palette from `SPEC.md` §4 (`theme/palette.dart`, `theme/app_theme.dart`)
+- [x] Home screen with 3 large tiles: Klocka / Bildquiz / Stavning (`shell/home_screen.dart`)
+- [x] Module placeholder screens (3 routes wired via `Navigator.push`)
+- [x] Home button visible in every module screen, returns to home (`shell/module_scaffold.dart`)
+- [x] Orientation support (`OrientationBuilder`: column in portrait, row in landscape; no orientation lock)
+- [x] Persistent settings store (`shared_preferences`; `settings/settings_controller.dart` + `SettingsScope`)
+- [x] Default settings written on first launch (verified by widget test)
 
-**Exit criterion:** Kid can tap any of the three tiles, see a blank module screen with the right title and a Home button that takes them back.
+**Exit criterion:** Kid can tap any of the three tiles, see a blank module screen with the right title and a Home button that takes them back. ✅ (verified by `flutter analyze` clean + 3 passing widget tests covering render, navigation in/out, and first-launch defaults)
+
+> Note: settings *screen* and parent gate are Phase 6; Phase 1 ships the settings *store* only. Home-screen gear icon deferred to Phase 6 with the parent gate.
 
 ---
 

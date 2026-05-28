@@ -1,30 +1,47 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:pkidz/main.dart';
+import 'package:pkidz/settings/settings_controller.dart';
+
+Future<void> _pumpApp(WidgetTester tester) async {
+  SharedPreferences.setMockInitialValues({});
+  final settings = await SettingsController.load();
+  await tester.pumpWidget(PkidzApp(settings: settings));
+  await tester.pumpAndSettle();
+}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('home shows the three module tiles', (tester) async {
+    await _pumpApp(tester);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('Klocka'), findsOneWidget);
+    expect(find.text('Bildquiz'), findsOneWidget);
+    expect(find.text('Stavning'), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('tapping a tile opens its module and Home returns',
+      (tester) async {
+    await _pumpApp(tester);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.tap(find.text('Bildquiz'));
+    await tester.pumpAndSettle();
+    expect(find.text('Bildquiz kommer snart'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.home_rounded));
+    await tester.pumpAndSettle();
+    expect(find.text('Klocka'), findsOneWidget);
+  });
+
+  testWidgets('first launch writes default settings', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final controller = await SettingsController.load();
+
+    expect(controller.settings.klockaDifficulty, 1);
+    expect(controller.settings.bildquizCategory, 'djur');
+
+    final prefs = await SharedPreferences.getInstance();
+    expect(prefs.getBool('settings.initialized'), true);
   });
 }
