@@ -196,11 +196,15 @@ Spell the word shown by an image.
         apple.png  (lowercase ASCII filename — see naming rules)
         brod.png
         ...
-    /familj        (family / characters)
-        bamse.png
-        skalman.png
+    /familj        (family — private photos)
+        mamma.png
+        pappa.png
         ...
 ```
+
+Additional categories added during build: `farger` (colors), `klader`
+(clothes), `kroppen` (body), `vader` (weather). New categories drop in the same
+way — folder + `_labels.json` + add to `pubspec.yaml`.
 
 ### Naming rules
 - Folder name = category display name (e.g. `djur` displayed as "Djur")
@@ -208,17 +212,20 @@ Spell the word shown by an image.
 - Filenames are lowercase ASCII; å→a, ä→a, ö→o for filesystem safety
 - A separate metadata mechanism (TBD in `CONTENT.md`) maps ASCII filenames back to display words with Swedish characters
 
-### Image specs (initial)
-- PNG, transparent or white background
-- Roughly square aspect ratio
-- 512×512 px target (will be downscaled for grid display)
+### Image source & specs
+- **Generic categories** (everything except `familj`) use **OpenMoji** emoji art
+  — consistent cartoon style, free (CC BY-SA 4.0), 618×618 PNG. This replaced the
+  original "user supplies all photos" plan: cohesive look, no sourcing burden.
+- **`familj`** uses the user's own **family photos** (private; excluded from the
+  public repo, see PLAN.md decisions log).
+- PNG, roughly square; downscaled for grid display.
 
-### Starter content (MVP)
-- ~37 items across 4 categories: 10 `djur` · 10 `fordon` · 10 `mat` · 7 `familj`
-- User will add more items and additional categories incrementally over time
-- All images provided by the user
-
-See `CONTENT.md` for the working word list and image specs.
+### Content (current)
+8 categories, ~145 items (grows over time by dropping in more):
+- `djur` 50 · `fordon` 25 · `mat` 30 · `farger` 10 · `klader` 10 · `kroppen` 10
+  · `vader` 10 · `familj` 7 (awaiting user photos)
+- The live item lists live in each category's `_labels.json` (the source of
+  truth). `CONTENT.md` describes the system and the original starter words.
 
 ---
 

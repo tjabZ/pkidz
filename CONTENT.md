@@ -3,6 +3,15 @@
 > How to add and structure content for p-KidZ.
 > The app is data-driven: drop images into the right folder, list them in `_labels.json`, rebuild, install.
 
+> **Current state (2026-05-28):** content is populated with **OpenMoji** cartoon
+> art (CC BY-SA 4.0) for all generic categories. 8 categories now exist —
+> `djur` (50), `fordon` (25), `mat` (30), `farger`, `klader`, `kroppen`,
+> `vader` (10 each), plus `familj` (7, awaiting the user's private family
+> photos). **The live, authoritative item lists are each category's
+> `_labels.json`** — the word tables below are the original starter set, kept
+> for reference. To add OpenMoji items: find the emoji's hex codepoint and fetch
+> `https://cdn.jsdelivr.net/gh/hfg-gmuend/openmoji/color/618x618/<HEX>.png`.
+
 ---
 
 ## Folder structure
