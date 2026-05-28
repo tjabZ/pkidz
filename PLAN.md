@@ -85,15 +85,16 @@
 
 **Goal:** working word-to-image quiz against bundled content.
 
-- [ ] Question generator: pick category, choose 4 distinct items, mark one correct
-- [ ] 2×2 grid layout (large images, word at top)
-- [ ] Tap handling: correct → green flash → next question
-- [ ] Tap handling: wrong → dim that tile, others stay tappable
-- [ ] Endless loop until kid hits Home
-- [ ] Settings: active category selection
-- [ ] Visual polish (spacing, image sizing, tap targets ≥80dp)
+- [x] Question generator: pick category, choose 4 distinct items, mark one correct (`bildquiz/quiz_generator.dart`; avoids immediate target repeat)
+- [x] 2×2 grid layout (large images, word at top) — `bildquiz/bildquiz_screen.dart`
+- [x] Tap handling: correct → green flash → next question
+- [x] Tap handling: wrong → dim that tile, others stay tappable
+- [x] Endless loop until kid hits Home
+- [x] Settings: active category selection (`bildquiz_settings_sheet.dart`)
+- [x] Visual polish (Cards, 16px spacing, large tiles); empty state when a category has <4 images
+- [x] Tests: QuizGenerator invariants (4 distinct options, target present, avoidTarget)
 
-**Exit criterion:** Kid can play Bildquiz end-to-end with their chosen category; switching categories in settings takes effect on next question.
+**Exit criterion:** Kid can play Bildquiz end-to-end with their chosen category; switching categories takes effect on next question. ✅ logic-complete (analyze + 4 tests; verified empty-state in Chrome). Full play pending real images — collection agent running for djur/fordon/mat.
 
 ---
 

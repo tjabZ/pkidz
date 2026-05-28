@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../modules/bildquiz_screen.dart';
+import '../modules/bildquiz/bildquiz_screen.dart';
 import '../modules/klocka/klocka_screen.dart';
 import '../modules/stavning_screen.dart';
 import '../theme/palette.dart';

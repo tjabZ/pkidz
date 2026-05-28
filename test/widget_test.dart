@@ -28,9 +28,9 @@ void main() {
       (tester) async {
     await _pumpApp(tester);
 
-    await tester.tap(find.text('Bildquiz'));
+    await tester.tap(find.text('Stavning'));
     await tester.pumpAndSettle();
-    expect(find.text('Bildquiz kommer snart'), findsOneWidget);
+    expect(find.text('Stavning kommer snart'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.home_rounded));
     await tester.pumpAndSettle();
