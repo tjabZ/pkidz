@@ -101,16 +101,18 @@
 
 **Goal:** working analog-clock reading game with both input methods.
 
-- [ ] Analog clock widget (12h face, hour-minute hands, custom-painted)
-- [ ] Sun/moon icon next to clock to indicate morning/afternoon
-- [ ] Time generator per difficulty (1: hours · 2: +half · 3: +quarter · 4: random minutes)
-- [ ] Multiple-choice input (4 distinct buttons in 24h format, distractors from same difficulty band)
-- [ ] Free-text input via two number scrollers (hours 00-23 · minutes 00-59)
-- [ ] Answer validation (always against 24-hour digital representation)
-- [ ] Wrong-answer behavior (dim/dim-and-retry per input mode)
-- [ ] Settings: difficulty · input method
+- [x] Analog clock widget (12h face, hour-minute hands, custom-painted) — `modules/klocka/analog_clock.dart`
+- [x] Sun/moon icon next to clock to indicate morning/afternoon (sun=AM 0–11, moon=PM 12–23)
+- [x] Time generator per difficulty (1: hours · 2: +half · 3: +quarter · 4: every 5 min) — `time_generator.dart`
+- [x] Multiple-choice input (4 distinct buttons in 24h format, distractors from same difficulty band)
+- [x] Free-text input via two number scrollers (hours 00-23 · minutes 00-59) — `ListWheelScrollView`
+- [x] Answer validation (always against 24-hour `ClockTime`)
+- [x] Wrong-answer behavior (MC: dim wrong option, others tappable · scroller: red flash + retry)
+- [x] Settings: difficulty · input method (in-module gear → `klocka_settings_sheet.dart`)
 
-**Exit criterion:** Kid can play Klocka at any of the 4 difficulties, using either input method.
+**Exit criterion:** Kid can play Klocka at any of the 4 difficulties, using either input method. ✅ (analyze clean + 6 Klocka tests; verified live in Chrome — clock render, MC, scrollers, settings, feedback)
+
+> Built ahead of Phase 3 (Bildquiz) because Klocka needs no content images. Design notes: sun=AM/moon=PM is the 12→24h skill; generated hours kept to 06:00–21:59 (relatable, avoids deep-night confusion); difficulty 4 = every 5 min (readable "advanced"). Module ships its own settings sheet; parent gate still deferred to Phase 6.
 
 ---
 

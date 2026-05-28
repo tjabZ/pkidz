@@ -10,10 +10,14 @@ class ModuleScaffold extends StatelessWidget {
     super.key,
     required this.title,
     required this.child,
+    this.actions,
   });
 
   final String title;
   final Widget child;
+
+  /// Optional app-bar actions, e.g. a module settings button.
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +35,7 @@ class ModuleScaffold extends StatelessWidget {
           ),
         ),
         title: Text(title, style: const TextStyle(fontSize: 26)),
+        actions: actions,
       ),
       body: SafeArea(child: child),
     );
