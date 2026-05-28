@@ -48,15 +48,25 @@ void main() {
     });
   });
 
-  testWidgets('load() finds all four bundled categories', (tester) async {
+  testWidgets('load() finds the bundled categories and parses items',
+      (tester) async {
     final library = await ContentLoader().load();
 
+    // Resilient to content growth: assert the known categories are present
+    // rather than an exact set/count.
     expect(
-      library.categories.map((c) => c.name).toList()..sort(),
-      ['djur', 'familj', 'fordon', 'mat'],
+      library.categories.map((c) => c.name).toSet(),
+      containsAll(<String>[
+        'djur', 'fordon', 'mat', 'familj',
+        'farger', 'klader', 'kroppen', 'vader',
+      ]),
     );
-    expect(library.byName('djur')!.items, hasLength(10));
-    expect(library.byName('familj')!.items, hasLength(7));
     expect(library.byName('djur')!.displayName, 'Djur');
+    expect(library.byName('djur')!.items.length, greaterThanOrEqualTo(10));
+
+    // A known item maps its ASCII key to the Swedish display word.
+    final hund =
+        library.byName('djur')!.items.firstWhere((i) => i.key == 'hund');
+    expect(hund.displayWord, 'Hund');
   });
 }
