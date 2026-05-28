@@ -66,6 +66,10 @@ flutter:
     - assets/content/fordon/
     - assets/content/mat/
     - assets/content/familj/
+    - assets/content/farger/
+    - assets/content/klader/
+    - assets/content/kroppen/
+    - assets/content/vader/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

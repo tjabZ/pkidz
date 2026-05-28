@@ -1,0 +1,15 @@
+{
+  "category_display": "Väder",
+  "items": {
+    "sol": "Sol",
+    "moln": "Moln",
+    "regn": "Regn",
+    "sno": "Snö",
+    "regnbage": "Regnbåge",
+    "blixt": "Blixt",
+    "mane": "Måne",
+    "stjarna": "Stjärna",
+    "aska": "Åska",
+    "snogubbe": "Snögubbe"
+  }
+}
