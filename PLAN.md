@@ -31,10 +31,10 @@
 - [ ] Test installing a small unsigned IPA to confirm the sideload pipeline works
 
 ### CI build pipeline
-- [ ] Decide CI provider (default: **GitHub Actions** — 2000 free macOS minutes/mo on public repos; Codemagic if private)
-- [ ] Create GitHub repo for the project
-- [ ] Write workflow that runs `flutter build ipa --no-codesign` on macOS runner
-- [ ] Workflow uploads the IPA as a release artifact
+- [x] Decide CI provider → **GitHub Actions** (free unlimited on public; ~200 macOS-min/mo free on private)
+- [~] Create GitHub repo for the project (public for now — see decisions log 2026-05-28)
+- [x] Write workflow that runs `flutter build ios --release --no-codesign` on macOS runner (`.github/workflows/build.yml`)
+- [x] Workflow uploads the IPA as an artifact (also builds Android debug APK)
 - [ ] Manual smoke test: download IPA, install via AltStore/TrollStore on iPad, launch
 
 **Exit criterion:**
@@ -47,7 +47,7 @@
 
 **Goal:** Flutter project exists; home screen with 3 tiles is navigable; theme/palette applied.
 
-- [ ] `flutter create pkidz` with `--org se.tjabz.pkidz` (or chosen bundle id)
+- [x] `flutter create pkidz` with `--org se.tjabz.pkidz` (bundle id confirmed: `se.tjabz.pkidz`)
 - [ ] Set up folder structure (`lib/{shell,modules,content,theme,settings}`)
 - [ ] Theme file with the Soft Scandinavian palette from `SPEC.md` §4
 - [ ] Home screen with 3 large tiles: Klocka / Bildquiz / Stavning
@@ -177,3 +177,5 @@
 - 2026-05-27 — Klocka simplified to **analog-only** display. Digital and "both" modes cut as redundant — analog reading is the actual skill being taught.
 - 2026-05-27 — Spelling wrong-letter behavior changed: wrong taps **do not commit** to the writing line (no backspace needed). Key briefly flashes red; kid just keeps trying. Easier for a 5-7yo.
 - 2026-05-27 — Correct-answer background brightened from `#DEEDD2` to `#C8E0B5` for a more rewarding visual.
+- 2026-05-28 — Flutter project scaffolded (`flutter create`, org `se.tjabz.pkidz`); GitHub Actions workflow (`build.yml`) written — Android debug APK + unsigned iOS IPA. Local git repo initialized on `main`.
+- 2026-05-28 — **Repo strategy:** start **public** now (free unlimited CI during active dev), with NO family photos committed. Switch to **private** later once stable/low-churn, then add real family photos. Hard rule: never commit a family photo while public (git history is permanent). Guardrail: `/assets/content/familj/` is gitignored until the switch.

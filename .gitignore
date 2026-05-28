@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Private family photos — MUST NOT be committed while the repo is public.
+# Remove this rule only after switching the GitHub repo to private (see PLAN.md decisions log).
+/assets/content/familj/
