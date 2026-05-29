@@ -14,6 +14,10 @@ class TimeGenerator {
   static const int minHour = 6;
   static const int maxHour = 21; // inclusive
 
+  /// 12-hour mode uses face numbers 1–12 (no AM/PM); SPEC.md §6.
+  static const int minHour12 = 1;
+  static const int maxHour12 = 12; // inclusive
+
   /// Allowed minute values for each difficulty band:
   /// 1 = full hours · 2 = +half · 3 = +quarter · 4 = every 5 minutes.
   static List<int> minutesFor(int difficulty) {
@@ -30,8 +34,10 @@ class TimeGenerator {
     }
   }
 
-  ClockTime next(int difficulty) {
-    final hour = minHour + _random.nextInt(maxHour - minHour + 1);
+  ClockTime next(int difficulty, {bool twelveHour = false}) {
+    final lo = twelveHour ? minHour12 : minHour;
+    final hi = twelveHour ? maxHour12 : maxHour;
+    final hour = lo + _random.nextInt(hi - lo + 1);
     final minutes = minutesFor(difficulty);
     final minute = minutes[_random.nextInt(minutes.length)];
     return ClockTime(hour, minute);
@@ -40,11 +46,11 @@ class TimeGenerator {
   /// [correct] plus distinct distractors from the same difficulty band,
   /// shuffled. Distractors are unique and never equal to [correct].
   List<ClockTime> choices(ClockTime correct, int difficulty,
-      {int count = 4}) {
+      {int count = 4, bool twelveHour = false}) {
     final options = <ClockTime>{correct};
     var guard = 0;
     while (options.length < count && guard < 1000) {
-      options.add(next(difficulty));
+      options.add(next(difficulty, twelveHour: twelveHour));
       guard++;
     }
     return options.toList()..shuffle(_random);

@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'content/content_loader.dart';
 import 'content/content_models.dart';
 import 'content/content_scope.dart';
+import 'parental/lock_gate.dart';
+import 'parental/screen_time_controller.dart';
+import 'parental/screen_time_scope.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_scope.dart';
 import 'shell/home_screen.dart';
@@ -14,7 +17,10 @@ Future<void> main() async {
   final settings = await SettingsController.load();
   final content = await ContentLoader().load();
   _logContent(content);
-  runApp(PkidzApp(settings: settings, content: content));
+  final screenTime = ScreenTimeController(
+      limitMinutes: settings.settings.screenTimeLimitMinutes);
+  runApp(PkidzApp(
+      settings: settings, content: content, screenTime: screenTime));
 }
 
 /// Phase 2 smoke output: confirms what the loader found at startup.
@@ -30,10 +36,16 @@ void _logContent(ContentLibrary content) {
 }
 
 class PkidzApp extends StatelessWidget {
-  const PkidzApp({super.key, required this.settings, required this.content});
+  const PkidzApp({
+    super.key,
+    required this.settings,
+    required this.content,
+    required this.screenTime,
+  });
 
   final SettingsController settings;
   final ContentLibrary content;
+  final ScreenTimeController screenTime;
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +53,15 @@ class PkidzApp extends StatelessWidget {
       controller: settings,
       child: ContentScope(
         library: content,
-        child: MaterialApp(
-          title: 'p-KidZ',
-          debugShowCheckedModeBanner: false,
-          theme: buildAppTheme(),
-          home: const HomeScreen(),
+        child: ScreenTimeScope(
+          controller: screenTime,
+          child: MaterialApp(
+            title: 'p-KidZ',
+            debugShowCheckedModeBanner: false,
+            theme: buildAppTheme(),
+            home: const HomeScreen(),
+            builder: (context, child) => LockGate(child: child!),
+          ),
         ),
       ),
     );

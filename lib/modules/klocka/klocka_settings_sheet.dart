@@ -57,7 +57,33 @@ class _KlockaSettingsSheet extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
+          const Text('Riktning', style: TextStyle(fontSize: 18)),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 10,
+            children: [
+              ChoiceChip(
+                label: const Text('Läsa klockan'),
+                selected:
+                    settings.klockaDirection == KlockaDirection.readClock,
+                selectedColor: Palette.primary,
+                onSelected: (_) => controller.update(settings.copyWith(
+                    klockaDirection: KlockaDirection.readClock)),
+              ),
+              ChoiceChip(
+                label: const Text('Ställa klockan'),
+                selected: settings.klockaDirection == KlockaDirection.setClock,
+                selectedColor: Palette.primary,
+                onSelected: (_) => controller.update(settings.copyWith(
+                    klockaDirection: KlockaDirection.setClock)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
           const Text('Svarssätt', style: TextStyle(fontSize: 18)),
+          const SizedBox(height: 4),
+          const Text('(gäller "Läsa klockan")',
+              style: TextStyle(fontSize: 13, color: Palette.text)),
           const SizedBox(height: 10),
           Wrap(
             spacing: 10,
@@ -79,6 +105,15 @@ class _KlockaSettingsSheet extends StatelessWidget {
                     klockaAnswerMethod: KlockaAnswerMethod.freeText)),
               ),
             ],
+          ),
+          const SizedBox(height: 8),
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('12-timmars', style: TextStyle(fontSize: 18)),
+            subtitle: const Text('Ingen sol/måne · tider 00:00–12:00'),
+            value: settings.klocka12Hour,
+            onChanged: (v) =>
+                controller.update(settings.copyWith(klocka12Hour: v)),
           ),
         ],
       ),

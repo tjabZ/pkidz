@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:pkidz/modules/klocka/clock_time.dart';
+import 'package:pkidz/modules/klocka/settable_clock.dart';
 import 'package:pkidz/modules/klocka/time_generator.dart';
 
 void main() {
@@ -58,6 +59,36 @@ void main() {
           expect(TimeGenerator.minutesFor(3), contains(c.minute));
         }
       }
+    });
+
+    test('12-hour mode keeps the hour in 1–12', () {
+      final gen = TimeGenerator(random: Random(11));
+      for (final difficulty in const [1, 2, 3, 4]) {
+        for (var i = 0; i < 200; i++) {
+          final t = gen.next(difficulty, twelveHour: true);
+          expect(t.hour, inInclusiveRange(1, 12));
+          expect(TimeGenerator.minutesFor(difficulty), contains(t.minute));
+        }
+      }
+    });
+  });
+
+  group('SettableClock', () {
+    test('hourFromAngle maps angles to 1–12 (12 at the top)', () {
+      expect(SettableClock.hourFromAngle(0), 12);
+      expect(SettableClock.hourFromAngle(30), 1);
+      expect(SettableClock.hourFromAngle(90), 3);
+      expect(SettableClock.hourFromAngle(180), 6);
+      expect(SettableClock.hourFromAngle(360), 12);
+    });
+
+    test('snapMinute picks the nearest allowed value (wrapping at 60)', () {
+      const quarters = [0, 15, 30, 45];
+      expect(SettableClock.snapMinute(40, quarters), 45);
+      expect(SettableClock.snapMinute(7, quarters), 0);
+      expect(SettableClock.snapMinute(58, quarters), 0); // wraps past 60 to 0
+      expect(SettableClock.snapMinute(20, quarters), 15);
+      expect(SettableClock.snapMinute(8, const [0, 5, 10, 15]), 10);
     });
   });
 }

@@ -4,13 +4,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:pkidz/content/content_models.dart';
 import 'package:pkidz/main.dart';
+import 'package:pkidz/parental/screen_time_controller.dart';
 import 'package:pkidz/settings/settings_controller.dart';
 
 Future<void> _pumpApp(WidgetTester tester) async {
   SharedPreferences.setMockInitialValues({});
   final settings = await SettingsController.load();
   await tester.pumpWidget(
-    PkidzApp(settings: settings, content: const ContentLibrary([])),
+    PkidzApp(
+      settings: settings,
+      content: const ContentLibrary([]),
+      screenTime: ScreenTimeController(limitMinutes: 0),
+    ),
   );
   await tester.pumpAndSettle();
 }

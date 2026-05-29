@@ -75,6 +75,15 @@ class _StavningSettingsSheet extends StatelessWidget {
                 ),
             ],
           ),
+          const SizedBox(height: 8),
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Stora bokstäver', style: TextStyle(fontSize: 18)),
+            subtitle: const Text('Visa tangentbord och bokstäver som VERSALER'),
+            value: settings.stavningUppercase,
+            onChanged: (v) =>
+                controller.update(settings.copyWith(stavningUppercase: v)),
+          ),
           const SizedBox(height: 12),
           const Text(
             'Bokstäverna visas svagt som ledtråd: Lätt alla · Medel varannan · '

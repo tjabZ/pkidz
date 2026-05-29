@@ -102,6 +102,7 @@ class _StavningScreenState extends State<StavningScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final uppercase = SettingsScope.of(context).settings.stavningUppercase;
     return ModuleScaffold(
       title: 'Stavning',
       actions: [
@@ -126,11 +127,13 @@ class _StavningScreenState extends State<StavningScreen> {
                   hints: _hints,
                   progress: _progress,
                   solved: _solved,
+                  uppercase: uppercase,
                 );
                 final keyboard = _Keyboard(
                   flashKey: _flashKey,
                   onKey: _onKey,
                   onBackspace: _onBackspace,
+                  uppercase: uppercase,
                 );
                 const padding = EdgeInsets.all(16);
                 if (landscape) {
@@ -169,6 +172,7 @@ class _Prompt extends StatelessWidget {
     required this.hints,
     required this.progress,
     required this.solved,
+    required this.uppercase,
   });
 
   final ContentItem item;
@@ -176,6 +180,7 @@ class _Prompt extends StatelessWidget {
   final Set<int> hints;
   final int progress;
   final bool solved;
+  final bool uppercase;
 
   @override
   Widget build(BuildContext context) {
@@ -194,6 +199,7 @@ class _Prompt extends StatelessWidget {
           hints: hints,
           progress: progress,
           solved: solved,
+          uppercase: uppercase,
         ),
       ],
     );
@@ -206,12 +212,14 @@ class _WritingLine extends StatelessWidget {
     required this.hints,
     required this.progress,
     required this.solved,
+    required this.uppercase,
   });
 
   final StavningWord word;
   final Set<int> hints;
   final int progress;
   final bool solved;
+  final bool uppercase;
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +230,9 @@ class _WritingLine extends StatelessWidget {
       children: [
         for (var i = 0; i < word.length; i++)
           _LetterCell(
-            letter: word.letters[i],
+            letter: uppercase
+                ? word.letters[i].toUpperCase()
+                : word.letters[i],
             typed: i < progress,
             hint: hints.contains(i),
             isCursor: i == progress && !solved,
@@ -292,11 +302,13 @@ class _Keyboard extends StatelessWidget {
     required this.flashKey,
     required this.onKey,
     required this.onBackspace,
+    required this.uppercase,
   });
 
   final String? flashKey;
   final ValueChanged<String> onKey;
   final VoidCallback onBackspace;
+  final bool uppercase;
 
   static const _rows = ['qwertyuiopå', 'asdfghjklöä', 'zxcvbnm'];
   static const _keyW = 52.0;
@@ -327,7 +339,7 @@ class _Keyboard extends StatelessWidget {
                         height: _keyH,
                         flashing: flashKey == ch,
                         onTap: () => onKey(ch),
-                        label: ch,
+                        label: uppercase ? ch.toUpperCase() : ch,
                       ),
                     ),
                   if (r == _rows.length - 1)

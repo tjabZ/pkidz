@@ -20,8 +20,10 @@ The app is data-driven: content is bundled image folders, and each folder's
 | 3 | Bildquiz | ✅ |
 | 4 | Klocka | ✅ |
 | 5 | Stavning | ✅ |
-| 6 | Settings & parent gate | not started |
+| 6 | Settings, parental PIN & screen-time lock | ✅ |
 | 7 | Polish & first real install | not started |
+| 8 | Stavning capitals + Klocka 12-hour mode | ✅ |
+| 9 | Klocka "set the clock" (digital→analog) | ✅ |
 
 See `PLAN.md` for the live build plan and decisions log.
 

@@ -137,16 +137,20 @@
 
 ---
 
-## Phase 6 — Settings & parent gate
+## Phase 6 — Settings, parental PIN & screen-time lock
 
-> Note: settings screens are built incrementally during phases 3-5 (each module ships its own settings panel). This phase is the polish pass.
+> Note: settings screens are built incrementally during phases 3-5 (each module ships its own settings panel). This phase is the polish pass + parental controls.
 
-- [ ] Settings home screen (one section per module + global)
-- [ ] Parent gate (math question, e.g. "3 + 5 = ?" — fresh question each time)
-- [ ] Reset-to-defaults button
-- [ ] Test that all settings persist after force-close + relaunch
+- [x] Settings home screen (one section per module + global) — `settings/settings_screen.dart`
+- [x] Parental PIN: set on first run, change in settings; 4-digit number-pad entry (`parental/pin_pad.dart`, `pin_gate.dart`)
+- [x] PIN gates the settings screen (replaces the earlier math-question idea)
+- [x] Screen-time limit setting (minutes per session; `0` = off)
+- [x] Per-session countdown; full-screen lock at 0; PIN dismisses lock + restarts countdown (`parental/screen_time_controller.dart`, `lock_gate.dart`)
+- [x] App opens to home with a fresh allowance each launch (no daily carry-over)
+- [x] Reset-to-defaults button
+- [x] Test that all settings + PIN persist after force-close + relaunch (`test/settings_test.dart`)
 
-**Exit criterion:** Parent gate prevents kid from changing settings; all settings survive app restart.
+**Exit criterion:** Parent sets a PIN and a per-session minute limit; the kid can't reach settings or get past the time-lock without the PIN; all settings survive restart. ✅ logic-complete (analyze clean + 36 tests incl. settings round-trip + screen-time state). Manual UX test pending.
 
 ---
 
@@ -164,6 +168,36 @@
 - [ ] File any pain points as new tasks under "Post-MVP" below
 
 **Exit criterion:** Kid plays p-KidZ on their iPad for a full session and learns something.
+
+---
+
+## Phase 8 — Small settings: Stavning capitals + Klocka 12-hour mode
+
+**Goal:** two quick display/generation toggles requested after Phase 5.
+
+- [x] Stavning: "Stora bokstäver" (capitals) toggle — keyboard, hint, and typed letters uppercase (A–Ö); matching stays case-insensitive (display-only)
+- [x] Klocka: "12-timmars" toggle — no sun/moon, generate times 00:00–12:00, answer in 12-hour (hour options/wheel 1–12)
+- [x] Settings + persistence for both
+- [x] Tests (12h generator range; settings round-trip)
+
+**Exit criterion:** Stavning can run in capitals; Klocka can run in a sun/moon-free 12-hour mode. ✅ logic-complete; manual test pending.
+
+---
+
+## Phase 9 — Klocka "set the clock" (digital → analog)
+
+**Goal:** reverse-direction clock practice — show a digital time, kid produces the clock.
+
+- [x] New Klocka "direction" setting: read the clock (existing) ↔ set the clock (new)
+- [x] Set-the-clock, difficulty 1–2: 4 analog-face options (MC), one correct
+- [x] Distractor faces from the same difficulty band — unique, ≠ correct
+- [x] Set-the-clock, difficulty 3–4: **draggable hour/minute hands** (`modules/klocka/settable_clock.dart`); minute hand snaps to the difficulty's minute set, hour hand to whole hours; touch the nearer hand to grab it
+- [x] Validation + feedback consistent with the rest of Klocka (Svara button, wrong-flash)
+- [x] Settings + persistence; tests (hand-snap + hourFromAngle)
+
+> Resolved: MC↔drag cutoff = difficulty 1–2 MC, 3–4 drag. Set-the-clock always generates 12-hour times (a produced face can't express AM/PM). Hour hand displays advancing-with-minutes but drag snaps it to whole hours.
+
+**Exit criterion:** Kid can be shown a digital time and answer by picking the right clock (1–2) or dragging the hands (3–4). ✅ logic-complete; manual drag-feel test pending.
 
 ---
 
@@ -202,3 +236,11 @@
 - 2026-05-29 — **Stavning shows everything lowercase** (guide word, hints, typed letters) to match the lowercase keys, even though display words are stored capitalized (e.g. `Häst`). Matching is case-insensitive via `toLowerCase()`.
 - 2026-05-29 — **Word order = random, avoid immediate repeat** (mirrors Bildquiz's `QuizGenerator`). Pre-filled medium letters are committed; the cursor auto-skips them so the kid only types the blanks. Wrong key adds a light haptic (`HapticFeedback.lightImpact`) — audio is out of scope but tactile feedback isn't.
 - 2026-05-29 — **Keyboard overflow fix:** first cut sized keys with a per-key padding math error → 11-key top row overflowed on narrow widths. Final design gives keys a fixed natural size and wraps the whole keyboard in a single `FittedBox(scaleDown)` for uniform, overflow-proof scaling. Caught by the new widget test.
+- 2026-05-29 — **Feature wave 2 planned (plan-only round, no code).** Four new asks captured into SPEC + PLAN:
+  - Stavning **capitals** toggle — display uppercase A–Ö; matching stays case-insensitive. → Phase 8
+  - Klocka **12-hour mode** — no sun/moon; generate & answer 00:00–12:00 (removes the 12→24h confusion). → Phase 8
+  - Klocka **"set the clock"** (digital→analog) — 4 analog-face MC at lower difficulty, **draggable hands** at higher. → Phase 9 (drag widget is the heavy part)
+  - **Parental controls** — per-session minute countdown → full-screen lock at 0; one 4-digit **PIN** guards Settings *and* dismisses the lock. The earlier math-gate idea is dropped. → folded into Phase 6.
+- 2026-05-29 — Build order across Phases 6/8/9 deliberately deferred (user chose "plan only"). Phase 9 carries an open detail: higher difficulty = finer minutes = harder to drag, so resolve hand-snapping + the MC↔drag cutoff at build time.
+- 2026-05-29 — **Feature wave 2 built (all four, one pass).** Phases 6, 8, 9 implemented together (user: "do all of them"). New `lib/parental/` (PIN pad, set/verify gate, screen-time controller + scope, full-screen lock gate) + `settings/settings_screen.dart`; home gear is PIN-gated. `AnalogClock` refactored to a shared `ClockFacePainter` reused by the new draggable `SettableClock`. Analyze clean; 36 tests pass. Built ahead of Phase 7 (first real install) — install will now include all of these.
+- 2026-05-29 — **Process-kill lesson:** a broad `flutter run -d chrome` command-line filter used to restart the dev server also killed an unrelated long-running Chrome session from a prior conversation. Fix: scope dev-server kills to the exact `--web-port` PID via `Get-NetTCPConnection -LocalPort 8088`.

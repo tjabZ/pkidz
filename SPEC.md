@@ -71,13 +71,24 @@ The system is data-driven: new content is added by dropping image files into fol
 - Tap to enter a module
 - Small gear icon (visible but parent-gated)
 
-### Parent gate
-- Triggered when the gear is long-pressed (or short-tapped — TBD during design)
-- Simple math question (e.g. "3 + 5 = ?") — easy for parent, blocks a 5-7yo
-- On success → settings screen
+### Parental PIN
+- A single 4-digit PIN, set by the parent on first run and changeable in Settings
+- Guards the Settings screen **and** dismisses the screen-time lock (below)
+- Replaces the earlier math-question idea — one mechanism for everything
+- Entered on a big-button number pad; a wrong PIN just clears and lets them retry
 
-### Settings (parent-gated)
-- Per-module configuration (difficulty, display mode, input mode, category)
+### Screen-time limit
+- Parent sets a per-session limit in minutes (e.g. 20) in Settings; `0` = off
+- A countdown starts each time the app launches; the app always opens to the
+  home screen with a fresh allowance (no daily carry-over)
+- When the countdown reaches 0, a full-screen lock covers the app — the kid
+  cannot continue
+- Entering the PIN dismisses the lock and starts a fresh countdown, so the limit
+  still applies after a parent-granted extension
+
+### Settings (PIN-gated)
+- Per-module configuration (difficulty, mode, input mode, category)
+- Parental PIN + screen-time limit
 - All settings persist between launches
 - Reset to defaults option
 
@@ -111,11 +122,27 @@ Teach the child to read an analog clock.
 3. + quarter hours (3:15, 3:45, ...)
 4. Random minutes (advanced)
 
-### Answer methods (configurable)
-- **Multiple choice** — 4 time options as tappable buttons (in 24-hour format, e.g. `15:30`)
-- **Free text** — two large number scrollers (hours 00-23, minutes 00-59)
+### Direction (configurable)
+- **Read the clock** (default) — analog face shown, kid answers the digital time
+- **Set the clock** (new) — a digital time is shown, kid produces the clock:
+  - lower difficulties: pick the matching face from **4 analog-clock options**
+  - higher difficulties: **drag the hour/minute hands** on a live clock to set
+    the time (hands snap to the difficulty's minute granularity)
 
-The kid **always** enters their answer in 24-hour digital format (e.g. `15:30`).
+### 12-hour mode (configurable)
+- **Off** (default): times span 06:00–21:59, a sun/moon icon shows morning vs
+  afternoon, answers are 24-hour (existing behavior)
+- **On**: no sun/moon icon; times are generated 00:00–12:00 and answered in
+  12-hour (hour input / options only go 0–12). Removes the 12→24h step that
+  confuses younger kids (e.g. "4 + moon = 16:00")
+
+### Answer methods (configurable, "read the clock" direction)
+- **Multiple choice** — 4 time options as tappable buttons (e.g. `15:30`)
+- **Free text** — two large number scrollers (hours, minutes)
+
+The kid enters their answer in 24-hour digital format (e.g. `15:30`) — unless
+12-hour mode is on, then 0–12. In the "set the clock" direction the answer is an
+analog face (MC) or the dragged hands instead.
 
 ### Multiple-choice distractor rules
 - One correct answer + 3 plausible distractors drawn from the same difficulty band
@@ -161,7 +188,13 @@ Spell the word shown by an image.
 - Image displayed prominently at top
 - Below: a writing line where the kid types the word
 - Custom big-button on-screen Swedish keyboard at bottom (includes å, ä, ö)
-- Only lowercase keys (case-insensitive matching means no Shift needed)
+- Lowercase keys by default; a Capitals setting switches the display to uppercase
+  (case-insensitive matching means no Shift either way)
+
+### Letter case (configurable)
+- **Lowercase** (default) — keyboard, hint letters, and typed letters are lowercase
+- **Capitals** — same but uppercase (A–Ö). Display only; matching stays
+  case-insensitive
 
 ### Difficulty levels
 The kid types **every** letter at every difficulty. Difficulty only controls how
@@ -233,16 +266,20 @@ way — folder + `_labels.json` + add to `pubspec.yaml`.
 
 ---
 
-## 10. Settings (Parent-Gated)
+## 10. Settings (PIN-Gated)
 
-Reachable from the home screen via the parent gate.
+Reachable from the home screen via the parental PIN (§5).
 
 Per-module configurable:
-- **Klocka:** difficulty (1-4), answer method (MC/free text)
+- **Klocka:** difficulty (1-4), direction (read / set the clock), answer method
+  (MC / scrollers — read mode), 12-hour mode (on/off)
 - **Bildquiz:** active category
-- **Stavning:** active category, difficulty (easy/medium/hard)
+- **Stavning:** active category, difficulty (easy/medium/hard), letter case
+  (lowercase / capitals)
 
 Global:
+- Parental PIN (set / change)
+- Screen-time limit (minutes per session; 0 = off)
 - Reset to defaults
 
 ---

@@ -16,15 +16,29 @@ class AnalogClock extends StatelessWidget {
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
-      child: CustomPaint(painter: _ClockPainter(time)),
+      child: CustomPaint(
+        painter: ClockFacePainter(
+          hourAngleDeg: hourAngleDeg(time),
+          minuteAngleDeg: minuteAngleDeg(time),
+        ),
+      ),
     );
   }
 }
 
-class _ClockPainter extends CustomPainter {
-  _ClockPainter(this.time);
+/// Hour-hand angle in degrees clockwise from 12, advancing within the hour.
+double hourAngleDeg(ClockTime time) => (time.hour12 % 12 + time.minute / 60) * 30;
 
-  final ClockTime time;
+/// Minute-hand angle in degrees clockwise from 12.
+double minuteAngleDeg(ClockTime time) => time.minute * 6.0;
+
+/// Paints a 12-hour clock face with the hands at the given angles. Shared by
+/// [AnalogClock] (read mode) and the draggable SettableClock (set mode).
+class ClockFacePainter extends CustomPainter {
+  ClockFacePainter({required this.hourAngleDeg, required this.minuteAngleDeg});
+
+  final double hourAngleDeg;
+  final double minuteAngleDeg;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -42,13 +56,9 @@ class _ClockPainter extends CustomPainter {
     canvas.drawCircle(center, radius - rim.strokeWidth / 2, rim);
 
     _drawTicksAndNumbers(canvas, center, radius);
-    // Hour hand: advances with the minutes within the hour.
-    final hourAngle = (time.hour12 % 12 + time.minute / 60) * 30;
-    _drawHand(canvas, center, hourAngle, radius * 0.52, radius * 0.045,
+    _drawHand(canvas, center, hourAngleDeg, radius * 0.52, radius * 0.045,
         Palette.text);
-    // Minute hand.
-    final minuteAngle = time.minute * 6.0;
-    _drawHand(canvas, center, minuteAngle, radius * 0.78, radius * 0.03,
+    _drawHand(canvas, center, minuteAngleDeg, radius * 0.78, radius * 0.03,
         Palette.secondary);
 
     canvas.drawCircle(center, radius * 0.05, Paint()..color = Palette.text);
@@ -95,5 +105,6 @@ class _ClockPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_ClockPainter oldDelegate) => oldDelegate.time != time;
+  bool shouldRepaint(ClockFacePainter old) =>
+      old.hourAngleDeg != hourAngleDeg || old.minuteAngleDeg != minuteAngleDeg;
 }
