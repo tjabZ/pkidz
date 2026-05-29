@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../settings/settings.dart';
 import '../../settings/settings_scope.dart';
 import '../../shell/module_scaffold.dart';
+import '../../shell/pressable.dart';
 import '../../theme/palette.dart';
 import 'analog_clock.dart';
 import 'clock_time.dart';
@@ -343,13 +344,15 @@ class _ChoiceButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Opacity(
       opacity: dimmed ? 0.3 : 1,
-      child: ElevatedButton(
-        onPressed: dimmed ? null : onTap,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: dimmed ? Palette.wrong : Palette.primary,
-          disabledBackgroundColor: Palette.wrong,
+      child: PressableScale(
+        child: ElevatedButton(
+          onPressed: dimmed ? null : onTap,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: dimmed ? Palette.wrong : Palette.primary,
+            disabledBackgroundColor: Palette.wrong,
+          ),
+          child: Text(time.digital, style: const TextStyle(fontSize: 30)),
         ),
-        child: Text(time.digital, style: const TextStyle(fontSize: 30)),
       ),
     );
   }

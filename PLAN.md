@@ -156,16 +156,24 @@
 
 ## Phase 7 — Polish & first real install
 
-**Goal:** install the app on the actual target device and observe the kid using it.
+**Goal:** make the app feel finished, then install it on the iPad and watch the kid use it.
 
-- [ ] Visual polish pass (spacing, animation, transitions)
-- [ ] App icon (pastel-themed)
-- [ ] Launch screen
-- [ ] Test on real Android device (one full session of each module)
-- [ ] Address rough edges discovered during real-device testing
-- [ ] Build and install on iPad (via chosen build path from Phase 0)
+### 7a — Software polish (buildable now)
+- [x] App icon: generated a pastel clock icon (pure-Dart `tool/make_icons.dart` — ImageMagick wasn't installed) wired to android/ios/web via `flutter_launcher_icons`
+- [x] Launch screen: `flutter_native_splash` — cream background + clock logo (android/ios/web)
+- [x] Gentle page transitions on module enter/leave (`shell/transitions.dart` fade+slide)
+- [x] Tap feedback (`shell/pressable.dart`): home tiles, Stavning keys, Klocka MC buttons, Bildquiz tiles
+- [x] Spacing & typography sweep: theme already centralized; added on-brand chip + switch themes
+- [ ] Emulator/Chrome pass: one full run of every module + settings/PIN/timer (in progress — your manual test)
+
+> Deferred by choice: a correct-answer celebration animation — revisit after the first real session.
+
+### 7b — First real install (blocked on Phase 0 jailbreak + a physical device)
+- [ ] Test on a real Android device (one full session of each module)
+- [ ] Build + install the unsigned IPA on the jailbroken iPad (via the Phase 0 path)
+- [ ] Address rough edges found on-device
 - [ ] Observe one real session with the kid; note pain points
-- [ ] File any pain points as new tasks under "Post-MVP" below
+- [ ] File pain points under Post-MVP
 
 **Exit criterion:** Kid plays p-KidZ on their iPad for a full session and learns something.
 
@@ -243,4 +251,5 @@
   - **Parental controls** — per-session minute countdown → full-screen lock at 0; one 4-digit **PIN** guards Settings *and* dismisses the lock. The earlier math-gate idea is dropped. → folded into Phase 6.
 - 2026-05-29 — Build order across Phases 6/8/9 deliberately deferred (user chose "plan only"). Phase 9 carries an open detail: higher difficulty = finer minutes = harder to drag, so resolve hand-snapping + the MC↔drag cutoff at build time.
 - 2026-05-29 — **Feature wave 2 built (all four, one pass).** Phases 6, 8, 9 implemented together (user: "do all of them"). New `lib/parental/` (PIN pad, set/verify gate, screen-time controller + scope, full-screen lock gate) + `settings/settings_screen.dart`; home gear is PIN-gated. `AnalogClock` refactored to a shared `ClockFacePainter` reused by the new draggable `SettableClock`. Analyze clean; 36 tests pass. Built ahead of Phase 7 (first real install) — install will now include all of these.
+- 2026-05-29 — **Phase 7 planned + split.** 7a = software polish (buildable now): generated pastel icon (`flutter_launcher_icons`), splash with logo (`flutter_native_splash`), gentle page transitions, tap feedback, spacing/typography sweep. Correct-answer celebration deferred. 7b = real install, blocked on the Phase 0 iPad jailbreak + a physical device.
 - 2026-05-29 — **Process-kill lesson:** a broad `flutter run -d chrome` command-line filter used to restart the dev server also killed an unrelated long-running Chrome session from a prior conversation. Fix: scope dev-server kills to the exact `--web-port` PID via `Get-NetTCPConnection -LocalPort 8088`.

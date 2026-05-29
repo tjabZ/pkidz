@@ -7,6 +7,8 @@ import '../parental/pin_gate.dart';
 import '../settings/settings_scope.dart';
 import '../settings/settings_screen.dart';
 import '../theme/palette.dart';
+import 'pressable.dart';
+import 'transitions.dart';
 
 /// Home shell: three large tiles, one per module (SPEC.md §5).
 /// Layout reflows between portrait (column) and landscape (row).
@@ -82,9 +84,7 @@ class HomeScreen extends StatelessWidget {
     final controller = SettingsScope.of(context);
     final ok = await showPinGate(context, controller);
     if (ok && context.mounted) {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => const SettingsScreen()),
-      );
+      Navigator.of(context).push(gentleRoute(const SettingsScreen()));
     }
   }
 }
@@ -105,13 +105,13 @@ class _HomeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return PressableScale(
+      child: Card(
       color: data.color,
       child: InkWell(
         borderRadius: BorderRadius.circular(24),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: data.builder),
-        ),
+        onTap: () =>
+            Navigator.of(context).push(gentleRoute(data.builder(context))),
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -130,6 +130,6 @@ class _HomeTile extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }

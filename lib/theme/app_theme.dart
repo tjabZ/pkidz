@@ -50,5 +50,22 @@ ThemeData buildAppTheme() {
         textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
       ),
     ),
+    chipTheme: ChipThemeData(
+      backgroundColor: Colors.white,
+      selectedColor: Palette.primary,
+      labelStyle: const TextStyle(fontSize: 15, color: Palette.text),
+      side: const BorderSide(color: Palette.primary),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor: const WidgetStatePropertyAll(Colors.white),
+      trackColor: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.selected)
+            ? Palette.primary
+            : const Color(0xFFCFC9BE),
+      ),
+      trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
+    ),
   );
 }

@@ -6,6 +6,7 @@ import '../../content/content_scope.dart';
 import '../../settings/settings.dart';
 import '../../settings/settings_scope.dart';
 import '../../shell/module_scaffold.dart';
+import '../../shell/pressable.dart';
 import '../../theme/palette.dart';
 import 'stavning_settings_sheet.dart';
 import 'stavning_word.dart';
@@ -381,27 +382,30 @@ class _Key extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      height: height,
-      child: Material(
-        color: flashing ? Palette.wrong : Colors.white,
-        elevation: 1,
-        borderRadius: BorderRadius.circular(10),
-        child: InkWell(
+    return PressableScale(
+      pressedScale: 0.9,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Material(
+          color: flashing ? Palette.wrong : Colors.white,
+          elevation: 1,
           borderRadius: BorderRadius.circular(10),
-          onTap: onTap,
-          child: Center(
-            child: icon != null
-                ? Icon(icon, size: 24, color: Palette.text)
-                : Text(
-                    label!,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: Palette.text,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10),
+            onTap: onTap,
+            child: Center(
+              child: icon != null
+                  ? Icon(icon, size: 24, color: Palette.text)
+                  : Text(
+                      label!,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: Palette.text,
+                      ),
                     ),
-                  ),
+            ),
           ),
         ),
       ),

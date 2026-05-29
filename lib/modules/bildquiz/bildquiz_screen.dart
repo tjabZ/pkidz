@@ -4,6 +4,7 @@ import '../../content/content_models.dart';
 import '../../content/content_scope.dart';
 import '../../settings/settings_scope.dart';
 import '../../shell/module_scaffold.dart';
+import '../../shell/pressable.dart';
 import '../../theme/palette.dart';
 import 'bildquiz_settings_sheet.dart';
 import 'quiz_generator.dart';
@@ -159,20 +160,22 @@ class _QuizTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Opacity(
       opacity: dimmed ? 0.3 : 1,
-      child: Card(
-        color: correct ? Palette.correctBg : Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-          side: correct
-              ? const BorderSide(color: Palette.correct, width: 4)
-              : BorderSide.none,
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: dimmed ? null : onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Image.asset(item.imagePath, fit: BoxFit.contain),
+      child: PressableScale(
+        child: Card(
+          color: correct ? Palette.correctBg : Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+            side: correct
+                ? const BorderSide(color: Palette.correct, width: 4)
+                : BorderSide.none,
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: dimmed ? null : onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Image.asset(item.imagePath, fit: BoxFit.contain),
+            ),
           ),
         ),
       ),
