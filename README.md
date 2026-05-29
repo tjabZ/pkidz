@@ -21,7 +21,7 @@ The app is data-driven: content is bundled image folders, and each folder's
 | 4 | Klocka | ✅ |
 | 5 | Stavning | ✅ |
 | 6 | Settings, parental PIN & screen-time lock | ✅ |
-| 7 | Polish & first real install | not started |
+| 7 | Polish & first real install | 7a polish ✅ · 7b install pending (jailbreak) |
 | 8 | Stavning capitals + Klocka 12-hour mode | ✅ |
 | 9 | Klocka "set the clock" (digital→analog) | ✅ |
 
