@@ -30,7 +30,8 @@ void main() {
 
     await tester.tap(find.text('Stavning'));
     await tester.pumpAndSettle();
-    expect(find.text('Stavning kommer snart'), findsOneWidget);
+    // The real module screen opened (module scaffold shows the Home button).
+    expect(find.byIcon(Icons.home_rounded), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.home_rounded));
     await tester.pumpAndSettle();

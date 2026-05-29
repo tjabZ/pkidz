@@ -121,18 +121,19 @@
 
 **Goal:** working spelling module with custom Swedish keyboard and live validation.
 
-- [ ] Custom big-button on-screen keyboard widget (a-ö layout, lowercase)
-- [ ] Backspace key, no Shift (case-insensitive)
-- [ ] Writing-line widget displaying typed letters
-- [ ] Per-keystroke validation against expected letter at current position
-- [ ] Wrong letter → key briefly flashes wrong color, letter is NOT committed, writing line stays at current position (no backspace needed)
-- [ ] Word completion → green flash → next question
-- [ ] Easy mode: faded full word above the writing line
-- [ ] Medium mode: pre-filled hint letters at random positions
-- [ ] Hard mode: only blank underscores
-- [ ] Settings: active category · difficulty
+- [x] Custom big-button on-screen keyboard widget (Swedish QWERTY incl. å ä ö, lowercase) — `stavning/stavning_screen.dart` (`_Keyboard`)
+- [x] Backspace key, no Shift (case-insensitive; matching is lowercased)
+- [x] Writing-line widget displaying typed/hint/blank letters (`_WritingLine`)
+- [x] Per-keystroke validation against expected letter at current position
+- [x] Wrong letter → key briefly flashes `#E8A3A3` (+ light haptic), letter is NOT committed, writing line stays at current position (no backspace needed)
+- [x] Word completion → green flash (900 ms) → next word (`WordGenerator`, random, avoids immediate repeat)
+- [x] Easy mode: every letter shown faintly inside its box (full-word tracing guide)
+- [x] Medium mode: alternating letters shown faintly in the boxes (`b _ m _ e`)
+- [x] Hard mode: all boxes blank
+- [x] Kid types every letter at every difficulty — hints are visual only, never auto-filled/skipped
+- [x] Settings: active category · difficulty (Lätt/Medel/Svår) — `stavning_settings_sheet.dart`
 
-**Exit criterion:** Kid can spell any word from the chosen category at any difficulty, with correct per-keystroke feedback.
+**Exit criterion:** Kid can spell any word from the chosen category at any difficulty, with correct per-keystroke feedback. ✅ (analyze clean + 28 tests incl. a keyboard-driven widget test: wrong key ignored, correct sequence solves the word. Logic covered by `stavning_test.dart`; UI wiring by `stavning_screen_test.dart`. Manual browser tap-through not run — project isn't web-configured; CI's Android/iOS builds are the next compile gate.)
 
 ---
 
@@ -189,7 +190,15 @@
 - 2026-05-28 — **Repo strategy:** start **public** now (free unlimited CI during active dev), with NO family photos committed. Switch to **private** later once stable/low-churn, then add real family photos. Hard rule: never commit a family photo while public (git history is permanent). Guardrail: `/assets/content/familj/` is gitignored until the switch.
 - 2026-05-28 — **Phase 1 shipped.** App shell built (theme, 3-tile home, module placeholders, Home button, `shared_preferences` store). Pushed; CI green (Android APK 4m27s + unsigned iOS IPA 2m55s). Verified live in Chrome.
 - 2026-05-28 — **Known CI item (not yet fixed):** GitHub Actions warns `checkout@v4`/`setup-java@v4`/`upload-artifact@v4` run on Node 20, force-upgraded to Node 24 on **2026-06-02**. Bump action majors before then to avoid breakage.
+- 2026-05-29 — **Stavning difficulty model reworked** (user feedback during Chrome testing). Hints are now purely visual: the kid types **every** letter at every difficulty. Easy shows all letters faintly *in the boxes* (was: faded word above the line); Medium shows alternating letters faintly in the boxes but the kid still types them; Hard is blank. Dropped the "pre-filled/cursor-skip" logic and the ≥1-blank guard (obsolete — no auto-completion possible now). SPEC.md §8 updated to match. `_progress` int replaced the typed-set.
+- 2026-05-29 — **CI Node-24 bump done** (ahead of the 2026-06-02 cutoff). Verified each action's latest major via the GitHub releases API, then pinned: `actions/checkout@v6`, `actions/setup-java@v5`, `actions/upload-artifact@v7` (all Node-24). `subosito/flutter-action@v2` left as-is (v2 is still the current major). Our usage of each is simple/stable inputs, so the bumps are drop-in. Not yet validated on a real CI run — confirm green on next push.
 - 2026-05-28 — **Phase 3 (Bildquiz) shipped** (logic + empty state); CI green. Plays once a category has ≥4 images.
 - 2026-05-28 — **Content images = OpenMoji** (https://openmoji.org, CC BY-SA 4.0, 618px PNG) for all generic categories. Chosen after the user rejected mixed Wikimedia photos/icons; OpenMoji gives one cohesive cartoon style. `familj` stays private user photos. Credit in `assets/content/IMAGE_CREDITS.md`.
 - 2026-05-28 — **Content expanded well beyond original spec:** 8 categories, ~145 items. `djur` 50 · `fordon` 25 · `mat` 30 · `farger`/`klader`/`kroppen`/`vader` 10 each · `familj` 7 (no images yet). `_labels.json` per folder is the source of truth. SPEC.md §9 + CONTENT.md updated.
 - 2026-05-28 — **Lesson: image collection is a poor fit for an autonomous sub-agent.** A spawned agent flailed (bad downloads, deleted files, invented folders). Wikimedia `filetype:drawing`/photo search returned junk (hazard placards, diagrams, maps). What worked: fetching OpenMoji by emoji codepoint directly (deterministic), and verifying batches via a generated montage image (cheap visual QA) before showing the user.
+- 2026-05-29 — **Phase 5 (Stavning) shipped.** New `lib/modules/stavning/` (word model, generator, screen+keyboard+writing-line, settings sheet). Old `stavning_screen.dart` placeholder + now-unused `module_placeholder.dart` deleted. Analyze clean, 28 tests pass (4 prior + 9 logic + 1 keyboard-driven widget test).
+- 2026-05-29 — **Keyboard layout: Swedish QWERTY** (q…å / a…ö ä / z…m + backspace), not the alphabetical "a-ö" the plan originally sketched. User chose QWERTY to match the physical/iOS keyboard the kid will graduate to. (PLAN task wording updated to match.)
+- 2026-05-29 — **Medium hints = alternating, fixed** (`b _ m _ e`, fills indices 0,2,4…), matching the SPEC example; stable each time a word appears. Guard ensures ≥1 blank so short/odd words are never pre-completed (matters as categories grow).
+- 2026-05-29 — **Stavning shows everything lowercase** (guide word, hints, typed letters) to match the lowercase keys, even though display words are stored capitalized (e.g. `Häst`). Matching is case-insensitive via `toLowerCase()`.
+- 2026-05-29 — **Word order = random, avoid immediate repeat** (mirrors Bildquiz's `QuizGenerator`). Pre-filled medium letters are committed; the cursor auto-skips them so the kid only types the blanks. Wrong key adds a light haptic (`HapticFeedback.lightImpact`) — audio is out of scope but tactile feedback isn't.
+- 2026-05-29 — **Keyboard overflow fix:** first cut sized keys with a per-key padding math error → 11-key top row overflowed on narrow widths. Final design gives keys a fixed natural size and wraps the whole keyboard in a single `FittedBox(scaleDown)` for uniform, overflow-proof scaling. Caught by the new widget test.

@@ -15,9 +15,9 @@ jobs:
     name: Android APK (debug)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -36,7 +36,7 @@ jobs:
 
       - run: flutter build apk --debug
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: pkidz-android-debug
           path: build/app/outputs/flutter-apk/app-debug.apk
@@ -46,7 +46,7 @@ jobs:
     name: iOS IPA (unsigned, for jailbroken iPad)
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: subosito/flutter-action@v2
         with:
@@ -68,7 +68,7 @@ jobs:
           zip -qry ../ipa/pkidz-unsigned.ipa Payload
           ls -la ../ipa
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: pkidz-ios-unsigned-ipa
           path: build/ios/ipa/pkidz-unsigned.ipa

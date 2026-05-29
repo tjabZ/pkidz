@@ -164,13 +164,17 @@ Spell the word shown by an image.
 - Only lowercase keys (case-insensitive matching means no Shift needed)
 
 ### Difficulty levels
-- **Easy** — the correct word appears faded above the writing line (tracing/copy)
-- **Medium** — some letters of the word are pre-filled as hints (e.g. `b _ m _ e` for "bamse")
-- **Hard** — only blank underscores: `_ _ _ _ _`
+The kid types **every** letter at every difficulty. Difficulty only controls how
+many letters are shown faintly inside the boxes as a tracing guide — hints never
+auto-fill or get skipped.
+- **Easy** — every letter shown faintly in its box (full-word tracing guide)
+- **Medium** — alternating letters shown faintly (e.g. `b _ m _ e` for "bamse")
+- **Hard** — all boxes blank
 
 ### Live validation
-- Every keystroke is checked against the expected letter at that position
-- Correct letter → committed to the writing line, kid continues to next position
+- Every keystroke is checked against the expected letter at the current position
+- Correct letter → committed to the writing line (a faint hint letter becomes a
+  solid typed letter), kid continues to the next position
 - Wrong letter → **does not commit**. The pressed key briefly flashes `#E8A3A3` (wrong) on the keyboard, the writing line stays unchanged at the current position. Kid just keeps trying — no backspace needed.
 - Case-insensitive: `bamse`, `Bamse`, `BAMSE` all accepted
 

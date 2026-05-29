@@ -1,17 +1,56 @@
-# pkidz
+# p-KidZ
 
-A new Flutter project.
+A small, offline-first Flutter learning app for one Swedish-speaking child
+(age 5–7, early reader). Three practice modules, no scores, no network:
 
-## Getting Started
+- **Klocka** — read an analog clock, answer in 24-hour time
+- **Bildquiz** — pick the image that matches a Swedish word
+- **Stavning** — spell the word shown by an image, on a custom Swedish keyboard
 
-This project is a starting point for a Flutter application.
+The app is data-driven: content is bundled image folders, and each folder's
+`_labels.json` maps ASCII filenames to the Swedish display word.
 
-A few resources to get you started if this is your first Flutter project:
+## Status
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+| Phase | What | State |
+|-------|------|-------|
+| 0 | Build env, CI, iPad jailbreak | CI ✅ · jailbreak pending (manual) |
+| 1 | App skeleton & home shell | ✅ |
+| 2 | Content system | ✅ |
+| 3 | Bildquiz | ✅ |
+| 4 | Klocka | ✅ |
+| 5 | Stavning | ✅ |
+| 6 | Settings & parent gate | not started |
+| 7 | Polish & first real install | not started |
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+See `PLAN.md` for the live build plan and decisions log.
+
+## Documentation
+
+- **`SPEC.md`** — what we're building (the locked contract)
+- **`PLAN.md`** — phased build plan, checkboxes, and decisions log
+- **`CONTENT.md`** — how to add/structure content
+
+## Tech
+
+- Flutter (Dart), iOS 12+ minimum, fully offline
+- State via `shared_preferences` (last-used settings only)
+- iOS builds via GitHub Actions (unsigned IPA for a jailbroken iPad); Android
+  debug APK also built in CI. Day-to-day dev on Windows.
+
+## Running locally
+
+```bash
+flutter pub get
+flutter run                 # Android emulator / device
+flutter run -d chrome       # quick UI check in a browser
+flutter analyze && flutter test
+```
+
+## Content
+
+Generic categories use **OpenMoji** art (CC BY-SA 4.0); see
+`assets/content/IMAGE_CREDITS.md`. The `familj` category is reserved for the
+user's private family photos and stays out of the public repo. To add items:
+drop PNGs into `assets/content/<category>/`, list them in that folder's
+`_labels.json`, and declare the folder in `pubspec.yaml`.
